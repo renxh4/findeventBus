@@ -1,0 +1,32 @@
+<idea-plugin>
+  <id>com.renxh</id>
+  <name>hani-easy-search</name>
+  <version>1.0</version>
+  <vendor email="18039395421@163.com" url="">momo</vendor>
+
+  <description>快速找到Eventbusqq和CmpSafeDispatcher,快速找到Eventbus和CmpSafeDispatcher,快速找到Eventbus和CmpSafeDispatcher</description>
+
+  <change-notes>无更新无更新无更新无更新无更新无更新无更新无更新无更新无更新无更新无更新无更新无更新无更新</change-notes>
+
+  <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="173.0"/>
+
+  <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.lang</depends>
+  <depends>com.intellij.modules.java</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+
+    <codeInsight.lineMarkerProvider language="JAVA"
+                                    implementationClass="HaniEventBusLineMarkerProvider"/>
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+</idea-plugin>
