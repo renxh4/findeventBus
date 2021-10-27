@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * Created by kgmyshin on 2015/06/07.
@@ -36,7 +37,7 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                         PsiMethod postMethod = eventBusClass.findMethodsByName("dispatch", false)[0];
                         PsiMethod method = (PsiMethod) psiElement;
                         PsiClass eventClass = ((PsiClassType) method.getParameterList().getParameters()[0].getTypeElement().getType()).resolve();
-                        new ShowUsagesAction(new SenderFilter(eventClass)).startFindUsages(postMethod, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
+                        new ShowUsagesAction(new SenderFilter(eventClass)).startFindUsages(null,postMethod, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                     }
                 }
             };
@@ -53,7 +54,7 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                         if (expressionTypes.length > 0) {
                             PsiClass eventClass = PsiUtils.getClass(expressionTypes[0], psiElement);
                             if (eventClass != null) {
-                                new ShowUsagesAction(new ReceiverFilter()).startFindUsages(eventClass, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
+                                new ShowUsagesAction(new ReceiverFilter()).startFindUsages(null,eventClass, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                             }
                         }
                     }
@@ -70,11 +71,21 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
                         PsiClass eventBusClass = javaPsiFacade.findClass("com.immomo.molive.common.component.common.dispatcher.CmpSafeDispatcher", GlobalSearchScope.allScope(project));
                         PsiMethod postMethod = eventBusClass.findMethodsByName("sendEvent", false)[0];
+                        PsiMethod postMethod1 = eventBusClass.findMethodsByName("sendCall", false)[0];
+
+                        PsiClass eventBusClass1 = javaPsiFacade.findClass("com.immomo.molive.common.component.common.dispatcher.CmpDispatcher", GlobalSearchScope.allScope(project));
+                        PsiMethod postMethod2 = eventBusClass1.findMethodsByName("sendEvent", false)[0];
+                        PsiMethod postMethod3 = eventBusClass1.findMethodsByName("sendCall", false)[0];
+                        ArrayList<PsiElement> psiMethodArrayList = new ArrayList<>();
+                        psiMethodArrayList.add(postMethod);
+                        psiMethodArrayList.add(postMethod1);
+                        psiMethodArrayList.add(postMethod2);
+                        psiMethodArrayList.add(postMethod3);
                         System.out.println("发送方法"+postMethod);
                         PsiMethod method = (PsiMethod) psiElement;
                         PsiClass eventClass = ((PsiClassType) method.getParameterList().getParameters()[0].getTypeElement().getType()).resolve();
                         System.out.println("发送类"+eventClass);
-                        new ShowUsagesAction(new SenderFilter(eventClass)).startFindUsages(postMethod, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
+                        new ShowUsagesAction(new SenderFilter(eventClass)).startFindUsages(psiMethodArrayList,postMethod, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                     }
                 }
             };
@@ -93,7 +104,7 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                             PsiClass eventClass = PsiUtils.getClass(expressionTypes[0], psiElement);
                             System.out.println("接收4"+eventClass);
                             if (eventClass != null) {
-                                new ShowUsagesAction(new DispatchReceiverFilter()).startFindUsages(eventClass, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
+                                new ShowUsagesAction(new DispatchReceiverFilter()).startFindUsages(null,eventClass, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                             }
                         }
                     }
