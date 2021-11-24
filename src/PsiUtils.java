@@ -10,6 +10,8 @@ import org.jetbrains.kotlin.psi.*;
  */
 public class PsiUtils {
 
+    private static int mcount = 0;
+
     public static PsiClass getClass(PsiType psiType, PsiElement context) {
         if (psiType instanceof PsiClassType) {
             return ((PsiClassType) psiType).resolve();
@@ -163,6 +165,35 @@ public class PsiUtils {
             return pluginDescriptor != null && pluginDescriptor.isEnabled();
         }
         return false;
+    }
+
+    public static void getpara(PsiElement element) {
+        System.out.println("开始-----------------");
+        PsiElement element1 = element;
+        while (element1.getParent() != null) {
+            element1 = element1.getParent();
+            System.out.println("SenderFilter1 = " + element1.getClass() + "/");
+            System.out.println("SenderFilter2 = " + element1.getText() + "/");
+        }
+        System.out.println("结束-----------------");
+    }
+
+
+    public static void getchild(PsiElement element, int count, boolean b) {
+        if (b) {
+            mcount = 0;
+        }
+        if (element == null || element.getChildren().length <= 0 || count > 5) return;
+        System.out.println("开始-----------------");
+        if (element.getChildren().length > 0) {
+            PsiElement[] children = element.getChildren();
+            for (PsiElement child : children) {
+                System.out.println("getchild1 = " + child.getClass() + "/");
+                System.out.println("getchild2 = " + child.getText() + "/");
+                getchild(element, mcount++, false);
+            }
+        }
+        System.out.println("结束-----------------");
     }
 
 

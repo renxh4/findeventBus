@@ -72,8 +72,4 @@ public class ReceiverFilter implements Filter {
 
         return false;
     }
-
-    private static boolean safeEquals(String obj, String value) {
-        return obj != null && obj.equals(value);
-    }
 }

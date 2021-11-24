@@ -112,7 +112,7 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                             PsiClass eventClass = PsiUtils.getClass(expressionTypes[0], psiElement);
                             System.out.println("接收4" + eventClass);
                             if (eventClass != null) {
-                                new ShowUsagesAction(new DispatchReceiverFilter()).startFindUsages(null, eventClass, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
+                                new ShowUsagesAction(new DispatchReceiverFilter(eventClass)).startFindUsages(null, eventClass, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                             }
                         }
                     }
