@@ -1,4 +1,9 @@
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.ide.plugins.PluginManager;
+import com.intellij.lang.Language;
+import com.intellij.openapi.extensions.PluginId;
 import com.intellij.psi.*;
+import org.jetbrains.kotlin.psi.*;
 
 /**
  * Created by kgmyshin on 2015/06/07.
@@ -32,23 +37,42 @@ public class PsiUtils {
     }
 
     public static boolean isEventBusPost(PsiElement psiElement) {
-        if (psiElement instanceof PsiCallExpression) {
-            PsiCallExpression callExpression = (PsiCallExpression) psiElement;
-            PsiMethod method = callExpression.resolveMethod();
-            if (method != null) {
-                String name = method.getName();
-                PsiElement parent = method.getParent();
-                if (name != null && name.equals("dispatch") && parent instanceof PsiClass) {
-                    PsiClass implClass = (PsiClass) parent;
-                    if (isEventBusClass(implClass) || isSuperClassEventBus(implClass)) {
-                        return true;
+        if (isJava(psiElement)) {
+            if (psiElement instanceof PsiCallExpression) {
+                PsiCallExpression callExpression = (PsiCallExpression) psiElement;
+                PsiMethod method = callExpression.resolveMethod();
+                if (method != null) {
+                    String name = method.getName();
+                    PsiElement parent = method.getParent();
+                    if (name != null && name.equals("dispatch") && parent instanceof PsiClass) {
+                        PsiClass implClass = (PsiClass) parent;
+                        if (isEventBusClass(implClass) || isSuperClassEventBus(implClass)) {
+                            return true;
+                        }
                     }
                 }
             }
+        } else if (isKotlin(psiElement)) {
+            if (psiElement instanceof KtDotQualifiedExpression) {
+                KtDotQualifiedExpression all = (KtDotQualifiedExpression) psiElement;
+                if (all.getFirstChild() instanceof KtDotQualifiedExpression && all.getLastChild() instanceof KtCallExpression) {
+                    String start = all.getFirstChild().getText();
+                    if (start != null && start.equals("CmpDispatcher.getInstance()")) {
+                        KtCallExpression postRoot = (KtCallExpression) all.getLastChild();
+                        if (postRoot.getFirstChild() instanceof KtNameReferenceExpression) {
+                            KtNameReferenceExpression referenceExpression = (KtNameReferenceExpression) postRoot.getFirstChild();
+                            if (referenceExpression.getReferencedName().equals("sendEvent")) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
         }
+
         return false;
     }
-
 
 
     public static boolean isCmpSafeDispatcherReceiver(PsiElement psiElement) {
@@ -61,7 +85,7 @@ public class PsiUtils {
                     if (qualifiedName != null && method.getParameterList().getParametersCount() == 1
                             && method.getParameterList().getParameters()[0].getType() instanceof PsiClassType &&
                             (qualifiedName.equals("com.immomo.molive.common.component.common.evet.annotation.OnCmpEvent")
-                                    ||qualifiedName.equals("com.immomo.molive.common.component.common.call.annotation.OnCmpCall"))) {
+                                    || qualifiedName.equals("com.immomo.molive.common.component.common.call.annotation.OnCmpCall"))) {
                         return true;
                     }
                 }
@@ -69,7 +93,6 @@ public class PsiUtils {
         }
         return false;
     }
-
 
 
     public static boolean isCmpSafeDispatcherPost(PsiElement psiElement) {
@@ -91,9 +114,6 @@ public class PsiUtils {
     }
 
 
-
-
-
     private static boolean isEventBusClass(PsiClass psiClass) {
         return psiClass.getName().equals("NotifyDispatcher");
     }
@@ -112,7 +132,7 @@ public class PsiUtils {
     }
 
     private static boolean isCmpSafeDispatcherClass(PsiClass psiClass) {
-        return psiClass.getName().equals("CmpSafeDispatcher")||psiClass.getName().equals("CmpDispatcher");
+        return psiClass.getName().equals("CmpSafeDispatcher") || psiClass.getName().equals("CmpDispatcher");
     }
 
     private static boolean isSuperClassCmpSafeDispatcher(PsiClass psiClass) {
@@ -121,15 +141,29 @@ public class PsiUtils {
             return false;
         }
         for (PsiClass superClass : supers) {
-            if (superClass.getName().equals("CmpSafeDispatcher")||superClass.getName().equals("CmpDispatcher")) {
+            if (superClass.getName().equals("CmpSafeDispatcher") || superClass.getName().equals("CmpDispatcher")) {
                 return true;
             }
         }
         return false;
     }
 
+    public static boolean isKotlin(PsiElement psiElement) {
+        return psiElement.getLanguage().is(Language.findLanguageByID("kotlin"));
+    }
 
+    public static boolean isJava(PsiElement psiElement) {
+        return psiElement.getLanguage().is(Language.findLanguageByID("JAVA"));
+    }
 
+    public static boolean checkIsKotlinInstalled() {
+        PluginId pluginId = PluginId.findId("org.jetbrains.kotlin");
+        if (pluginId != null) {
+            IdeaPluginDescriptor pluginDescriptor = PluginManager.getPlugin(pluginId);
+            return pluginDescriptor != null && pluginDescriptor.isEnabled();
+        }
+        return false;
+    }
 
 
 }

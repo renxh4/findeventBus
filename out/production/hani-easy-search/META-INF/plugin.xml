@@ -18,11 +18,24 @@
   <depends>com.intellij.modules.lang</depends>
   <depends>com.intellij.modules.java</depends>
 
+  <depends>com.intellij.modules.all</depends>
+  <depends>org.jetbrains.kotlin</depends>
+
+
+
+
+
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
 
     <codeInsight.lineMarkerProvider language="JAVA"
                                     implementationClass="HaniEventBusLineMarkerProvider"/>
+
+
+    <codeInsight.lineMarkerProvider language="kotlin"
+                                    implementationClass="LineMarkerProviderKotlin"/>
+
+
   </extensions>
 
   <actions>
