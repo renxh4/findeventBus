@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class SenderFilter implements Filter {
     public String TAG  = "SenderFilter = ";
-    public final PsiClass eventClass;
+    public final String eventClass;
 
-    public SenderFilter(PsiClass eventClass) {
+    public SenderFilter(String eventClass) {
         this.eventClass = eventClass;
-        System.out.println(TAG +"1"+ eventClass.getName() + "/");
+        System.out.println(TAG +"1"+ eventClass + "/");
     }
 
     @Override
@@ -48,7 +48,7 @@ public class SenderFilter implements Filter {
                     PsiType[] types = callExpression.getArgumentList().getExpressionTypes();
                     for (PsiType type : types) {
                         PsiClass aClass = PsiUtils.getClass(type, element);
-                        if (aClass != null && aClass.getName() != null && aClass.getName().equals(eventClass.getName())) {
+                        if (aClass != null && aClass.getName() != null && aClass.getName().equals(eventClass)) {
                             // pattern : EventBus.getDefault().post(new Event());
                             return true;
                         }
@@ -65,7 +65,7 @@ public class SenderFilter implements Filter {
                                         if (variable instanceof PsiLocalVariable) {
                                             PsiLocalVariable localVariable = (PsiLocalVariable) variable;
                                             PsiClass psiClass = PsiUtils.getClass(localVariable.getTypeElement().getType(), element);
-                                            if (psiClass != null && psiClass.getName() != null && psiClass.getName().equals(eventClass.getName())) {
+                                            if (psiClass != null && psiClass.getName() != null && psiClass.getName().equals(eventClass)) {
                                                 // pattern :
                                                 //   Event event = new Event();
                                                 //   EventBus.getDefault().post(event);
@@ -146,7 +146,7 @@ public class SenderFilter implements Filter {
                                 PsiElement firstChild = argumentExpression.getFirstChild();
                                 if (firstChild instanceof KtNameReferenceExpression) {
                                     System.out.println(TAG+"9" + firstChild.getText() + "/");
-                                    if (firstChild.getText().equals(eventClass.getName())) {
+                                    if (firstChild.getText().equals(eventClass)) {
                                         return true;
                                     }
                                 }
@@ -179,15 +179,13 @@ public class SenderFilter implements Filter {
                             KtValueArgument ktValueArgument = arguments.get(k);
                             System.out.println(TAG+"11" + ktValueArgument.getText() + "/");
                             KtExpression argumentExpression = ktValueArgument.getArgumentExpression();
-//                            PsiUtils.getchild(argumentExpression,0,true);
-//                            PsiUtils.getpara(argumentExpression);
                             if (argumentExpression != null) {
                                 System.out.println(TAG+"12" + argumentExpression.getText() + "/" + argumentExpression.getName());
                                 PsiElement firstChild = argumentExpression.getFirstChild();
                                 if (firstChild instanceof KtNameReferenceExpression) {
                                     //
                                     System.out.println(TAG+"13" + firstChild.getText() + "/");
-                                    if (firstChild.getText().equals(eventClass.getName())) {
+                                    if (firstChild.getText().equals(eventClass)) {
                                         return true;
                                     }
                                 }else {
@@ -211,7 +209,7 @@ public class SenderFilter implements Filter {
                                                                         PsiElement firstChild1 = children1[j].getFirstChild();
                                                                         String text1 = firstChild1.getText();
                                                                         System.out.println(TAG+"17" + text1 + "/");
-                                                                        if (text1.equals(eventClass.getName())){
+                                                                        if (text1.equals(eventClass)){
                                                                             return true;
                                                                         }
                                                                     }

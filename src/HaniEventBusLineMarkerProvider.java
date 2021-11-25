@@ -46,7 +46,7 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                         PsiMethod postMethod = eventBusClass.findMethodsByName("dispatch", false)[0];
                         PsiMethod method = (PsiMethod) psiElement;
                         PsiClass eventClass = ((PsiClassType) method.getParameterList().getParameters()[0].getTypeElement().getType()).resolve();
-                        new ShowUsagesAction(new SenderFilter(eventClass)).startFindUsages(null, postMethod, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
+                        new ShowUsagesAction(new SenderFilter(eventClass.getName())).startFindUsages(null, postMethod, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                     }
                 }
             };
@@ -93,7 +93,7 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                         PsiMethod method = (PsiMethod) psiElement;
                         PsiClass eventClass = ((PsiClassType) method.getParameterList().getParameters()[0].getTypeElement().getType()).resolve();
                         System.out.println("发送类" + eventClass);
-                        new ShowUsagesAction(new SenderFilter(eventClass)).startFindUsages(psiMethodArrayList, postMethod, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
+                        new ShowUsagesAction(new SenderFilter(eventClass.getName())).startFindUsages(psiMethodArrayList, postMethod, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                     }
                 }
             };
