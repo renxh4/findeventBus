@@ -112,7 +112,7 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                             PsiClass eventClass = PsiUtils.getClass(expressionTypes[0], psiElement);
                             System.out.println("接收4" + eventClass);
                             if (eventClass != null) {
-                                new ShowUsagesAction(new DispatchReceiverFilter(eventClass)).startFindUsages(null, eventClass, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
+                                new ShowUsagesAction(new DispatchReceiverFilter(eventClass.getName())).startFindUsages(null, eventClass, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                             }
                         }
                     }
@@ -123,7 +123,7 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
     @Nullable
     @Override
     public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement psiElement) {
-        if (!PsiUtils.isJava(psiElement))return null;
+        if (!PsiUtils.isJava(psiElement)) return null;
         if (PsiUtils.isEventBusPost(psiElement)) {
             return new LineMarkerInfo<PsiElement>(psiElement, psiElement.getTextRange(), ICON,
                     null, SHOW_RECEIVERS,
