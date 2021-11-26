@@ -22,7 +22,7 @@ public class DispatchReceiverFilter implements Filter {
         if (element == null) return false;
         if (PsiUtils.isKotlin(element)) {
             Log.d(TAG + "1" + element.getClass());
-            PsiUtils.getpara(element);
+//            PsiUtils.getpara(element);
             if (element.getParent() instanceof KtUserType) {
                 if (element.getParent().getParent() instanceof KtNullableType) {
                     if (element.getParent().getParent().getParent() instanceof KtTypeReference) {
