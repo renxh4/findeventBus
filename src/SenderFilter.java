@@ -14,7 +14,7 @@ public class SenderFilter implements Filter {
 
     public SenderFilter(String eventClass) {
         this.eventClass = eventClass;
-        System.out.println(TAG +"1"+ eventClass + "/");
+        Log.d(TAG +"1"+ eventClass + "/");
     }
 
     @Override
@@ -22,15 +22,15 @@ public class SenderFilter implements Filter {
         PsiElement element = ((UsageInfo2UsageAdapter) usage).getElement();
         if (element == null) return false;
         if (PsiUtils.isKotlin(element)) {
-            System.out.println(TAG+"2" + element.getClass());
+            Log.d(TAG+"2" + element.getClass());
             if (element instanceof KtNameReferenceExpression) {
                 KtNameReferenceExpression aa = (KtNameReferenceExpression) element;
-                System.out.println(TAG +"3"+ aa.getParent().getClass());
+                Log.d(TAG +"3"+ aa.getParent().getClass());
                 if (aa.getParent() instanceof KtCallExpression) {
                     KtCallExpression aa1 = (KtCallExpression) aa.getParent();
                     if (aa1.getParent() instanceof KtDotQualifiedExpression) {
                         KtDotQualifiedExpression aa2 = (KtDotQualifiedExpression) aa1.getParent();
-                        System.out.println(TAG+"4" + aa2.getText() + "/");
+                        Log.d(TAG+"4" + aa2.getText() + "/");
                         boolean check = check(aa2);
                         if (check){
                             return true;
@@ -88,26 +88,26 @@ public class SenderFilter implements Filter {
     private void text(KtDotQualifiedExpression aa2) {
         PsiElement[] children = aa2.getChildren();
         for (int i = 0; i < children.length; i++) {
-            System.out.println("SenderFilter2 = " + children[i].getClass() + "/");
-            System.out.println("SenderFilter3 = " + children[i].getText() + "/");
+            Log.d("SenderFilter2 = " + children[i].getClass() + "/");
+            Log.d("SenderFilter3 = " + children[i].getText() + "/");
             if (children[i] instanceof KtCallExpression) {
                 KtCallExpression aa3 = (KtCallExpression) children[i];
                 PsiElement[] children1 = aa3.getChildren();
                 for (int j = 0; j < children1.length; j++) {
-                    System.out.println("SenderFilterj1 = " + children1[j].getClass() + "/");
-                    System.out.println("SenderFilterj2 = " + children1[j].getText() + "/");
+                    Log.d("SenderFilterj1 = " + children1[j].getClass() + "/");
+                    Log.d("SenderFilterj2 = " + children1[j].getText() + "/");
                     if (children1[j] instanceof KtValueArgumentList) {
                         KtValueArgumentList aa4 = (KtValueArgumentList) children1[j];
                         List<KtValueArgument> arguments = aa4.getArguments();
                         for (int k = 0; k < arguments.size(); k++) {
                             KtValueArgument ktValueArgument = arguments.get(k);
-                            System.out.println("SenderFilterk1 = " + ktValueArgument.getText() + "/");
+                            Log.d("SenderFilterk1 = " + ktValueArgument.getText() + "/");
                             KtExpression argumentExpression = ktValueArgument.getArgumentExpression();
                             if (argumentExpression != null) {
-                                System.out.println("SenderFilterargumentExpression = " + argumentExpression.getText() + "/" + argumentExpression.getName());
+                                Log.d("SenderFilterargumentExpression = " + argumentExpression.getText() + "/" + argumentExpression.getName());
                                 PsiElement firstChild = argumentExpression.getFirstChild();
                                 if (firstChild instanceof KtNameReferenceExpression) {
-                                    System.out.println("SenderFiltername = " + firstChild.getText() + "/");
+                                    Log.d("SenderFiltername = " + firstChild.getText() + "/");
                                 }
                             }
                         }
@@ -119,7 +119,7 @@ public class SenderFilter implements Filter {
 
     private boolean check(KtDotQualifiedExpression aa2) {
         PsiElement firstChild1 = aa2.getFirstChild();
-        System.out.println(TAG+"5" + firstChild1.getText() + "/"+firstChild1.getClass());
+        Log.d(TAG+"5" + firstChild1.getText() + "/"+firstChild1.getClass());
         if (firstChild1 instanceof KtDotQualifiedExpression){
             //适配CmpDispatcher.getInstance()
             if (firstChild1.getText().equals("CmpDispatcher.getInstance()")){
@@ -127,7 +127,7 @@ public class SenderFilter implements Filter {
             }
         }
         if (firstChild1 instanceof KtNameReferenceExpression) {
-            System.out.println(TAG+"6" + firstChild1.getText() + "/");
+            Log.d(TAG+"6" + firstChild1.getText() + "/");
             //适配NotifyDispatcher
             if (firstChild1.getText().equals("NotifyDispatcher")) {
                 PsiElement lastChild = aa2.getLastChild();
@@ -139,13 +139,13 @@ public class SenderFilter implements Filter {
                         List<KtValueArgument> arguments = aa4.getArguments();
                         for (int k = 0; k < arguments.size(); k++) {
                             KtValueArgument ktValueArgument = arguments.get(k);
-                            System.out.println(TAG+"7" + ktValueArgument.getText() + "/");
+                            Log.d(TAG+"7" + ktValueArgument.getText() + "/");
                             KtExpression argumentExpression = ktValueArgument.getArgumentExpression();
                             if (argumentExpression != null) {
-                                System.out.println(TAG+"8" + argumentExpression.getText() + "/" + argumentExpression.getName());
+                                Log.d(TAG+"8" + argumentExpression.getText() + "/" + argumentExpression.getName());
                                 PsiElement firstChild = argumentExpression.getFirstChild();
                                 if (firstChild instanceof KtNameReferenceExpression) {
-                                    System.out.println(TAG+"9" + firstChild.getText() + "/");
+                                    Log.d(TAG+"9" + firstChild.getText() + "/");
                                     if (firstChild.getText().equals(eventClass)) {
                                         return true;
                                     }
@@ -170,21 +170,21 @@ public class SenderFilter implements Filter {
             PsiElement firstChild2 = aa3.getFirstChild();
             if (firstChild2 instanceof KtNameReferenceExpression) {
                 String text = firstChild2.getText();
-                System.out.println(TAG+"10" + text + "/");
+                Log.d(TAG+"10" + text + "/");
                 if (text.equals("sendEvent")||text.equals("sendCall")) {
                     if (lastChild1 instanceof KtValueArgumentList) {
                         KtValueArgumentList aa4 = (KtValueArgumentList) lastChild1;
                         List<KtValueArgument> arguments = aa4.getArguments();
                         for (int k = 0; k < arguments.size(); k++) {
                             KtValueArgument ktValueArgument = arguments.get(k);
-                            System.out.println(TAG+"11" + ktValueArgument.getText() + "/");
+                            Log.d(TAG+"11" + ktValueArgument.getText() + "/");
                             KtExpression argumentExpression = ktValueArgument.getArgumentExpression();
                             if (argumentExpression != null) {
-                                System.out.println(TAG+"12" + argumentExpression.getText() + "/" + argumentExpression.getName());
+                                Log.d(TAG+"12" + argumentExpression.getText() + "/" + argumentExpression.getName());
                                 PsiElement firstChild = argumentExpression.getFirstChild();
                                 if (firstChild instanceof KtNameReferenceExpression) {
                                     //
-                                    System.out.println(TAG+"13" + firstChild.getText() + "/");
+                                    Log.d(TAG+"13" + firstChild.getText() + "/");
                                     if (firstChild.getText().equals(eventClass)) {
                                         return true;
                                     }
@@ -200,15 +200,15 @@ public class SenderFilter implements Filter {
                                                         PsiElement[] children = parent.getChildren();
                                                         for (int i = 0; i < children.length; i++) {
                                                             if (children[i] instanceof KtProperty){
-                                                                System.out.println(TAG+"14" + children[i].getText() + "/");
+                                                                Log.d(TAG+"14" + children[i].getText() + "/");
                                                                 PsiElement[] children1 = children[i].getChildren();
                                                                 for (int j = 0; j < children1.length; j++) {
-                                                                    System.out.println(TAG+"15" + children1[j].getClass() + "/");
-                                                                    System.out.println(TAG+"16" + children1[j].getText() + "/");
+                                                                    Log.d(TAG+"15" + children1[j].getClass() + "/");
+                                                                    Log.d(TAG+"16" + children1[j].getText() + "/");
                                                                     if (children1[j] instanceof KtCallExpression){
                                                                         PsiElement firstChild1 = children1[j].getFirstChild();
                                                                         String text1 = firstChild1.getText();
-                                                                        System.out.println(TAG+"17" + text1 + "/");
+                                                                        Log.d(TAG+"17" + text1 + "/");
                                                                         if (text1.equals(eventClass)){
                                                                             return true;
                                                                         }

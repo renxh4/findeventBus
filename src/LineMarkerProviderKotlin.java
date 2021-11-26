@@ -26,7 +26,7 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
             new GutterIconNavigationHandler<PsiElement>() {
                 @Override
                 public void navigate(MouseEvent e, PsiElement psiElement) {
-                    System.out.println("SHOW_SENDERS_nitiy1=" + psiElement.getClass() + "/" + psiElement.getText());
+                    Log.d("SHOW_SENDERS_nitiy1=" + psiElement.getClass() + "/" + psiElement.getText());
                     if (psiElement instanceof KtNamedFunction) {
                         Project project = psiElement.getProject();
                         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
@@ -43,19 +43,19 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
     private static String getName(KtNamedFunction namedFunction, String name) {
         PsiElement[] children = namedFunction.getChildren();
         for (int i = 0; i < children.length; i++) {
-            System.out.println("SHOW_SENDERS_nitiy2=" + children[i].getClass());
-            System.out.println("SHOW_SENDERS_nitiy3=" + children[i].getText());
+            Log.d("SHOW_SENDERS_nitiy2=" + children[i].getClass());
+            Log.d("SHOW_SENDERS_nitiy3=" + children[i].getText());
             if (children[i] instanceof KtParameterList) {
                 KtParameterList ktParameterList = (KtParameterList) children[i];
                 PsiElement[] children1 = ktParameterList.getChildren();
                 for (int j = 0; j < children1.length; j++) {
-                    System.out.println("SHOW_SENDERS_nitiy4=" + children1[j].getClass());
-                    System.out.println("SHOW_SENDERS_nitiy5=" + children1[j].getText());
+                    Log.d("SHOW_SENDERS_nitiy4=" + children1[j].getClass());
+                    Log.d("SHOW_SENDERS_nitiy5=" + children1[j].getText());
                     if (children1[j] instanceof KtParameter) {
                         PsiElement[] children2 = children1[j].getChildren();
                         for (int k = 0; k < children2.length; k++) {
-                            System.out.println("SHOW_SENDERS_nitiy6" + children2[k].getClass());
-                            System.out.println("SHOW_SENDERS_nitiy7" + children2[k].getText());
+                            Log.d("SHOW_SENDERS_nitiy6" + children2[k].getClass());
+                            Log.d("SHOW_SENDERS_nitiy7" + children2[k].getText());
                             if (children2[k] instanceof KtTypeReference) {
                                 KtTypeReference bb = (KtTypeReference) children2[k];
                                 name = bb.getText();
@@ -63,15 +63,15 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
                                     KtTypeElement typeElement = bb.getTypeElement();
                                     PsiElement[] children3 = typeElement.getChildren();
                                     for (int l = 0; l < children3.length; l++) {
-                                        System.out.println("SHOW_SENDERS_nitiy9" + children3[l].getClass());
-                                        System.out.println("SHOW_SENDERS_nitiy10" + children3[l].getText());
+                                        Log.d("SHOW_SENDERS_nitiy9" + children3[l].getClass());
+                                        Log.d("SHOW_SENDERS_nitiy10" + children3[l].getText());
                                         if (children3[l] instanceof KtUserType) {
                                             name = children3[l].getText();
                                         }
                                     }
                                 }
 
-                                System.out.println("SHOW_SENDERS_nitiy8" + name);
+                                Log.d("SHOW_SENDERS_nitiy8" + name);
                             }
                         }
                     }
@@ -87,7 +87,7 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
             new GutterIconNavigationHandler<PsiElement>() {
                 @Override
                 public void navigate(MouseEvent e, PsiElement psiElement) {
-                    System.out.println("ktSHOW_RECEIVERS0: " + psiElement.getText() + psiElement.getClass());
+                    Log.d("ktSHOW_RECEIVERS0: " + psiElement.getText() + psiElement.getClass());
                     if (psiElement instanceof KtCallExpression) {
                         String name = getParamName(e, psiElement);
                         PsiClass psiclas = getPsiclas(psiElement, name);
@@ -97,23 +97,23 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
             };
 
     private static String getParamName(MouseEvent e, PsiElement psiElement) {
-        System.out.println("ktSHOW_RECEIVERS1: " + psiElement);
+        Log.d("ktSHOW_RECEIVERS1: " + psiElement);
         PsiElement[] children = psiElement.getChildren();
         for (int i = 0; i < children.length; i++) {
-            System.out.println("ktSHOW_RECEIVERS2: " + children[i].getClass());
-            System.out.println("ktSHOW_RECEIVERS3: " + children[i].getText());
+            Log.d("ktSHOW_RECEIVERS2: " + children[i].getClass());
+            Log.d("ktSHOW_RECEIVERS3: " + children[i].getText());
             if (children[i] instanceof KtValueArgumentList) {
                 KtValueArgumentList list = (KtValueArgumentList) children[i];
                 List<KtValueArgument> arguments = list.getArguments();
                 for (int k = 0; k < arguments.size(); k++) {
                     KtValueArgument ktValueArgument = arguments.get(k);
-                    System.out.println("ktSHOW_RECEIVERS4:" + ktValueArgument.getText() + "/");
+                    Log.d("ktSHOW_RECEIVERS4:" + ktValueArgument.getText() + "/");
                     KtExpression argumentExpression = ktValueArgument.getArgumentExpression();
                     if (argumentExpression != null) {
-                        System.out.println("ktSHOW_RECEIVERS5:" + argumentExpression.getText() + "/" + argumentExpression.getName());
+                        Log.d("ktSHOW_RECEIVERS5:" + argumentExpression.getText() + "/" + argumentExpression.getName());
                         PsiElement firstChild = argumentExpression.getFirstChild();
                         if (firstChild instanceof KtNameReferenceExpression) {
-                            System.out.println("ktSHOW_RECEIVERS6:" + firstChild.getText() + "/");
+                            Log.d("ktSHOW_RECEIVERS6:" + firstChild.getText() + "/");
                             KtNameReferenceExpression aa = (KtNameReferenceExpression) firstChild;
                             return aa.getReferencedName();
                         }
@@ -138,7 +138,7 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
     private static void getKtClass(PsiPackage aPackage, String name, Project project, PsiClass[] psiClass) {
         if (aPackage.containsClassNamed(name)) {
             PsiClass[] classByShortName = aPackage.findClassByShortName(name, GlobalSearchScope.allScope(project));
-            System.out.println("找到了classByShortName" + classByShortName[0].getName());
+            Log.d("找到了classByShortName" + classByShortName[0].getName());
             psiClass[0] = classByShortName[0];
             return;
         }
@@ -168,7 +168,7 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
                         psiMethodArrayList.add(postMethod1);
                         psiMethodArrayList.add(postMethod2);
                         psiMethodArrayList.add(postMethod3);
-                        System.out.println("发送方法" + postMethod);
+                        Log.d("发送方法" + postMethod);
                         KtNamedFunction ktNamedFunction = (KtNamedFunction) psiElement;
                         String name = null;
                         name = getName(ktNamedFunction, name);

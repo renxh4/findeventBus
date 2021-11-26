@@ -16,7 +16,6 @@ import org.intellij.plugins.relaxNG.compact.psi.util.PsiFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.psi.*;
-import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -89,10 +88,10 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                         psiMethodArrayList.add(postMethod1);
                         psiMethodArrayList.add(postMethod2);
                         psiMethodArrayList.add(postMethod3);
-                        System.out.println("发送方法" + postMethod);
+                        Log.d("发送方法" + postMethod);
                         PsiMethod method = (PsiMethod) psiElement;
                         PsiClass eventClass = ((PsiClassType) method.getParameterList().getParameters()[0].getTypeElement().getType()).resolve();
-                        System.out.println("发送类" + eventClass);
+                        Log.d("发送类" + eventClass);
                         new ShowUsagesAction(new SenderFilter(eventClass.getName())).startFindUsages(psiMethodArrayList, postMethod, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                     }
                 }
@@ -104,13 +103,13 @@ public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
                 public void navigate(MouseEvent e, PsiElement psiElement) {
                     if (psiElement instanceof PsiMethodCallExpression) {
                         PsiMethodCallExpression expression = (PsiMethodCallExpression) psiElement;
-                        System.out.println("接收1" + expression);
+                        Log.d("接收1" + expression);
                         PsiType[] expressionTypes = expression.getArgumentList().getExpressionTypes();
                         if (expressionTypes.length > 0) {
-                            System.out.println("接收2" + expressionTypes[0]);
-                            System.out.println("接收3" + psiElement);
+                            Log.d("接收2" + expressionTypes[0]);
+                            Log.d("接收3" + psiElement);
                             PsiClass eventClass = PsiUtils.getClass(expressionTypes[0], psiElement);
-                            System.out.println("接收4" + eventClass);
+                            Log.d("接收4" + eventClass);
                             if (eventClass != null) {
                                 new ShowUsagesAction(new DispatchReceiverFilter(eventClass.getName())).startFindUsages(null, eventClass, new RelativePoint(e), PsiUtilBase.findEditor(psiElement), MAX_USAGES);
                             }

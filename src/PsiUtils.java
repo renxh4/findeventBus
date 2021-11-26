@@ -148,42 +148,42 @@ public class PsiUtils {
     }
 
     public static void getpara(PsiElement element) {
-        System.out.println("开始-----------------");
+        Log.d("开始-----------------");
         PsiElement element1 = element;
         while (element1.getParent() != null) {
             element1 = element1.getParent();
-            System.out.println("SenderFilter1 = " + element1.getClass() + "/");
-            System.out.println("SenderFilter2 = " + element1.getText() + "/");
+            Log.d("SenderFilter1 = " + element1.getClass() + "/");
+            Log.d("SenderFilter2 = " + element1.getText() + "/");
         }
-        System.out.println("结束-----------------");
+        Log.d("结束-----------------");
     }
 
 
     public static void getchild(PsiElement element, int count, String tag) {
         mcount = count;
-        System.out.println("开始-----------------" + (element == null) + "/" + "/" + (element.getChildren().length <= 0) + "/" + (mcount > 100));
+        Log.d("开始-----------------" + (element == null) + "/" + "/" + (element.getChildren().length <= 0) + "/" + (mcount > 100));
         if (element == null || element.getChildren().length <= 0 || mcount > 100) return;
-        System.out.println("开始-----------------");
+        Log.d("开始-----------------");
         if (element.getChildren().length > 0) {
             PsiElement[] children = element.getChildren();
             for (PsiElement child : children) {
-                System.out.println(tag + child.getClass() + "/");
-                System.out.println(tag + child.getText() + "/");
+                Log.d(tag + child.getClass() + "/");
+                Log.d(tag + child.getText() + "/");
                 getchild(element, mcount++, tag);
             }
         }
-        System.out.println("结束-----------------");
+        Log.d("结束-----------------");
     }
 
     public static boolean isEventBusReceiverKT(PsiElement element, String TAG) {
         if (element instanceof KtNamedFunction) {
             KtNamedFunction parent = (KtNamedFunction) element;
             PsiElement firstChild = parent.getFirstChild();
-            System.out.println(TAG + "1" + firstChild.getClass());
-            System.out.println(TAG + "2" + firstChild.getText());
+            Log.d(TAG + "1" + firstChild.getClass());
+            Log.d(TAG + "2" + firstChild.getText());
             if (firstChild instanceof KtDeclarationModifierList) {
                 if (firstChild.getText().equals("@OnCmpCall") || firstChild.getText().equals("@OnCmpEvent")) {
-                    System.out.println(TAG + "3" + firstChild.getText());
+                    Log.d(TAG + "3" + firstChild.getText());
                     return true;
                 }
             }
@@ -195,14 +195,14 @@ public class PsiUtils {
         if (element instanceof KtNamedFunction) {
             KtNamedFunction parent = (KtNamedFunction) element;
             PsiElement firstChild = parent.getFirstChild();
-            System.out.println(TAG + "1" + firstChild.getClass());
-            System.out.println(TAG + "2" + firstChild.getText());
-            System.out.println(TAG + "9" + parent.getName());
+            Log.d(TAG + "1" + firstChild.getClass());
+            Log.d(TAG + "2" + firstChild.getText());
+            Log.d(TAG + "9" + parent.getName());
             if (parent.getName() != null && (parent.getName().equals("onEvent")
                     || parent.getName().equals("onEventMainThread")
                     || parent.getName().equals("onEventBackgroundThread")
                     || parent.getName().equals("onEventAsync"))) {
-                System.out.println(TAG + "4" + parent.getName());
+                Log.d(TAG + "4" + parent.getName());
                 return true;
             }
         }
@@ -213,7 +213,7 @@ public class PsiUtils {
         if (psiElement instanceof KtCallExpression) {
             if (psiElement.getParent() instanceof KtDotQualifiedExpression) {
                 PsiElement firstChild1 = psiElement.getParent().getFirstChild();
-                System.out.println(TAG + "1" + firstChild1.getText() + "/" + firstChild1.getClass());
+                Log.d(TAG + "1" + firstChild1.getText() + "/" + firstChild1.getClass());
                 if (firstChild1 instanceof KtDotQualifiedExpression) {
                     if (firstChild1.getText().equals("CmpDispatcher.getInstance()")) {
                         PsiElement lastChild = psiElement.getParent().getLastChild();
@@ -222,7 +222,7 @@ public class PsiUtils {
                             PsiElement firstChild2 = aa3.getFirstChild();
                             if (firstChild2 instanceof KtNameReferenceExpression) {
                                 String text = firstChild2.getText();
-                                System.out.println(TAG + "2" + text + "/");
+                                Log.d(TAG + "2" + text + "/");
                                 if (text.equals("sendEvent") || text.equals("sendCall")) {
                                     return true;
                                 }
@@ -232,7 +232,7 @@ public class PsiUtils {
                 }
 
                 if (firstChild1 instanceof KtNameReferenceExpression) {
-                    System.out.println(TAG + "3" + firstChild1.getText() + "/");
+                    Log.d(TAG + "3" + firstChild1.getText() + "/");
                     //适配NotifyDispatcher
                     if (!firstChild1.getText().equals("NotifyDispatcher")) {
                         PsiElement lastChild = psiElement.getParent().getLastChild();
@@ -241,7 +241,7 @@ public class PsiUtils {
                             PsiElement firstChild2 = aa3.getFirstChild();
                             if (firstChild2 instanceof KtNameReferenceExpression) {
                                 String text = firstChild2.getText();
-                                System.out.println(TAG + "7" + text + "/");
+                                Log.d(TAG + "7" + text + "/");
                                 if (text.equals("sendEvent") || text.equals("sendCall")) {
                                     return true;
                                 }
@@ -258,20 +258,20 @@ public class PsiUtils {
         if (psiElement instanceof KtCallExpression) {
             if (psiElement.getParent() instanceof KtDotQualifiedExpression) {
                 PsiElement firstChild1 = psiElement.getParent().getFirstChild();
-                System.out.println(TAG + "1" + firstChild1.getText() + "/" + firstChild1.getClass());
+                Log.d(TAG + "1" + firstChild1.getText() + "/" + firstChild1.getClass());
 
                 if (firstChild1 instanceof KtNameReferenceExpression) {
-                    System.out.println(TAG + "3" + firstChild1.getText() + "/");
+                    Log.d(TAG + "3" + firstChild1.getText() + "/");
                     //适配NotifyDispatcher
                     if (firstChild1.getText().equals("NotifyDispatcher")) {
                         PsiElement[] children = psiElement.getParent().getChildren();
                         for (int i = 0; i < children.length; i++) {
-                            System.out.println(TAG + "4" + children[i].getClass() + "/");
-                            System.out.println(TAG + "5" + children[i].getText() + "/");
+                            Log.d(TAG + "4" + children[i].getClass() + "/");
+                            Log.d(TAG + "5" + children[i].getText() + "/");
 
                             if (children[i] instanceof KtCallExpression) {
                                 PsiElement firstChild = children[i].getFirstChild();
-                                System.out.println(TAG + "6" + firstChild.getText() + "/");
+                                Log.d(TAG + "6" + firstChild.getText() + "/");
                                 if (firstChild.getText().equals("dispatch")) {
                                     return true;
                                 }

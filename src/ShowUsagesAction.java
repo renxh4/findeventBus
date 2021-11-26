@@ -167,7 +167,7 @@ public class ShowUsagesAction extends AnAction implements PopupAction {
                     new PsiElementProcessor<PsiElement>() {
                         @Override
                         public boolean execute(@NotNull final PsiElement element) {
-                            System.out.println("图标点击" + element);
+                            Log.d("图标点击" + element);
                             startFindUsages(null, element, popupPosition, editor, USAGES_PAGE_SIZE);
                             return false;
                         }
@@ -175,7 +175,7 @@ public class ShowUsagesAction extends AnAction implements PopupAction {
         } else {
             PsiElement element = ((PsiElementUsageTarget) usageTargets[0]).getElement();
             if (element != null) {
-                System.out.println("图标点击usageTargets" + element);
+                Log.d("图标点击usageTargets" + element);
                 startFindUsages(null, element, popupPosition, editor, USAGES_PAGE_SIZE);
             }
         }
@@ -210,7 +210,7 @@ public class ShowUsagesAction extends AnAction implements PopupAction {
 
     void startFindUsages(ArrayList<PsiElement> list, @NotNull PsiElement element, @NotNull RelativePoint popupPosition, Editor editor, int maxUsages) {
         this.mList = list;
-        System.out.println("startFindUsages" + element);
+        Log.d("startFindUsages" + element);
         Project project = element.getProject();
         FindUsagesManager findUsagesManager = ((FindManagerImpl) FindManager.getInstance(project)).getFindUsagesManager();
         FindUsagesHandler handler = findUsagesManager.getNewFindUsagesHandler(element, false);
@@ -330,7 +330,7 @@ public class ShowUsagesAction extends AnAction implements PopupAction {
             @Override
             public boolean process(@NotNull Usage usage) {
                 synchronized (usages) {
-                    System.out.println("process");
+                    Log.d("process");
                     if (!filter.shouldShow(usage)) return true;
                     if (visibleNodes.size() >= maxUsages) return false;
                     if (UsageViewManager.isSelfUsage(usage, myUsageTarget)) {
@@ -358,31 +358,31 @@ public class ShowUsagesAction extends AnAction implements PopupAction {
                 }
             }
         };
-        System.out.println("这个是啥" + handler.getPrimaryElements().length + "/" + handler.getSecondaryElements().length);
+        Log.d("这个是啥" + handler.getPrimaryElements().length + "/" + handler.getSecondaryElements().length);
         if (handler.getPrimaryElements().length > 0) {
             for (PsiElement element : handler.getPrimaryElements()) {
-                System.out.println("这个是啥1" + element);
+                Log.d("这个是啥1" + element);
             }
         }
 
         if (handler.getSecondaryElements().length > 0) {
             for (PsiElement element : handler.getSecondaryElements()) {
-                System.out.println("这个是啥2" + element);
+                Log.d("这个是啥2" + element);
             }
         }
         PsiElement[] primaryElements;
         if (mList == null) {
-            System.out.println("这个是啥3为空");
+            Log.d("这个是啥3为空");
             primaryElements = handler.getPrimaryElements();
         } else {
             PsiElement[] arr = new PsiElement[mList.size()];
             primaryElements = mList.toArray(arr);
-            System.out.println("不为空");
+            Log.d("不为空");
         }
 
         if (primaryElements.length > 0) {
             for (PsiElement element : primaryElements) {
-                System.out.println("这个是啥4" + element.getText());
+                Log.d("这个是啥4" + element.getText());
             }
         }
         final ProgressIndicator indicator = FindUsagesManager.startProcessUsages(handler, primaryElements, handler.getSecondaryElements(), collect, options, new Runnable() {
