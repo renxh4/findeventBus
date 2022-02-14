@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class HaniEventBusLineMarkerProvider implements LineMarkerProvider {
 
-    public static final Icon ICON = IconLoader.getIcon("/icons/icon.png");
+    public static final Icon ICON = IconLoader.getIcon("/icons/icon_too.png");
     public static final Icon ICON_SUN = IconLoader.findIcon("/icons/icon_sun.png");
 
     public static final int MAX_USAGES = 100;

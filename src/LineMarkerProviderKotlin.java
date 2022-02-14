@@ -20,7 +20,7 @@ import java.util.List;
  * Created by by likfe ( https://github.com/likfe/ )  on 18/03/05.
  */
 public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon.LineMarkerProvider {
-    public static final Icon ICON = IconLoader.getIcon("/icons/icon.png");
+    public static final Icon ICON = IconLoader.getIcon("/icons/icon_too.png");
     public static final int MAX_USAGES = 100;
     private static GutterIconNavigationHandler<PsiElement> SHOW_SENDERS =
             new GutterIconNavigationHandler<PsiElement>() {
