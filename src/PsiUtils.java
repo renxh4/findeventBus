@@ -66,8 +66,8 @@ public class PsiUtils {
                     String qualifiedName = annotation.getQualifiedName();
                     if (qualifiedName != null && method.getParameterList().getParametersCount() == 1
                             && method.getParameterList().getParameters()[0].getType() instanceof PsiClassType &&
-                            (qualifiedName.equals("com.immomo.molive.common.component.common.evet.annotation.OnCmpEvent")
-                                    || qualifiedName.equals("com.immomo.molive.common.component.common.call.annotation.OnCmpCall"))) {
+                            (qualifiedName.equals("common.component.common.evet.annotation.OnCmpEvent")
+                                    || qualifiedName.equals("common.component.common.call.annotation.OnCmpCall"))) {
                         return true;
                     }
                 }

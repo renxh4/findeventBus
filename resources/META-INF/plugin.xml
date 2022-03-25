@@ -1,8 +1,8 @@
 <idea-plugin>
   <id>com.renxh</id>
-  <name>hani-easy-search</name>
+  <name>search</name>
   <version>1.0</version>
-  <vendor email="18039395421@163.com" url="">momo</vendor>
+  <vendor email="18039395421@163.com" url="">dasdad</vendor>
 
   <description>快速找到NotifyDispatcher和CmpSafeDispatcher,支持java和kotlin</description>
 

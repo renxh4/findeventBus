@@ -30,7 +30,7 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
                     if (psiElement instanceof KtNamedFunction) {
                         Project project = psiElement.getProject();
                         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-                        PsiClass eventBusClass = javaPsiFacade.findClass("com.immomo.molive.foundation.eventcenter.eventdispatcher.NotifyDispatcher", GlobalSearchScope.allScope(project));
+                        PsiClass eventBusClass = javaPsiFacade.findClass("foundation.eventcenter.eventdispatcher.NotifyDispatcher", GlobalSearchScope.allScope(project));
                         PsiMethod postMethod = eventBusClass.findMethodsByName("dispatch", false)[0];
                         KtNamedFunction namedFunction = (KtNamedFunction) psiElement;
                         String name = null;
@@ -128,7 +128,7 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
         PsiClass[] psiClass = new PsiClass[1];
         Project project = psiElement.getProject();
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-        PsiPackage aPackage = javaPsiFacade.findPackage("com.immomo.molive");
+        PsiPackage aPackage = javaPsiFacade.findPackage("");
         if (aPackage != null) {
             getKtClass(aPackage, name, project, psiClass);
         }
@@ -156,11 +156,11 @@ public class LineMarkerProviderKotlin implements com.intellij.codeInsight.daemon
                     if (psiElement instanceof KtNamedFunction) {
                         Project project = psiElement.getProject();
                         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-                        PsiClass eventBusClass = javaPsiFacade.findClass("com.immomo.molive.common.component.common.dispatcher.CmpSafeDispatcher", GlobalSearchScope.allScope(project));
+                        PsiClass eventBusClass = javaPsiFacade.findClass("common.component.common.dispatcher.CmpSafeDispatcher", GlobalSearchScope.allScope(project));
                         PsiMethod postMethod = eventBusClass.findMethodsByName("sendEvent", false)[0];
                         PsiMethod postMethod1 = eventBusClass.findMethodsByName("sendCall", false)[0];
 
-                        PsiClass eventBusClass1 = javaPsiFacade.findClass("com.immomo.molive.common.component.common.dispatcher.CmpDispatcher", GlobalSearchScope.allScope(project));
+                        PsiClass eventBusClass1 = javaPsiFacade.findClass("common.component.common.dispatcher.CmpDispatcher", GlobalSearchScope.allScope(project));
                         PsiMethod postMethod2 = eventBusClass1.findMethodsByName("sendEvent", false)[0];
                         PsiMethod postMethod3 = eventBusClass1.findMethodsByName("sendCall", false)[0];
                         ArrayList<PsiElement> psiMethodArrayList = new ArrayList<>();
